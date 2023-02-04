@@ -7,5 +7,5 @@ In this repo the frequencies of the 4 first graphlets are calculated using
 CUDA.
 
 Based on [this paper](assets/JOSS-FGLT-main.pdf) I need to calculate the
-$d_0,d_1,d_2,d_3,d_4$ and I'm only going to use CUDA to calculate $d_4 = c_3 =
-C_3 e /2$ where $C_3 = A \odot A^2$.
+$d_0,d_1,d_2,d_3,d_4$ and I'm only going to use CUDA to calculate 
+$d\_4 = c_3 = C_3 e /2$ where $C_3 = A \odot A^2$.
