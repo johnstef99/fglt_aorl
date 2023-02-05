@@ -29,30 +29,26 @@ freq freq_calc(csx A) {
   freq f = freq_new(A->v);
 
   // calculate σ0
-  for (size_t i = 0; i < A->v; i++) {
-    f->s0[i] = 1;
-  }
+  cilk_for(size_t i = 0; i < A->v; i++) { f->s0[i] = 1; }
 
   // calculate σ1
-  for (size_t i = 0; i < A->v; i++) {
+  cilk_for(size_t i = 0; i < A->v; i++) {
     f->s1[i] = A->com[i + 1] - A->com[i];
   }
 
   // calculate σ2
   spmv(A, f->s1, f->s2);
-  for (size_t i = 0; i < A->v; i++) {
-    f->s2[i] -= f->s1[i];
-  }
+  cilk_for(size_t i = 0; i < A->v; i++) { f->s2[i] -= f->s1[i]; }
 
   // calculate σ3
-  for (size_t i = 0; i < A->v; i++) {
+  cilk_for(size_t i = 0; i < A->v; i++) {
     f->s3[i] = (f->s1[i] * (f->s1[i] - 1)) / 2;
   }
 
   // calculate σ4
   c3(A, f->s4);
 
-  for (size_t i = 0; i < A->v; i++) {
+  cilk_for(size_t i = 0; i < A->v; i++) {
     f->s2[i] -= 2 * f->s4[i];
     f->s3[i] -= f->s4[i];
   }
@@ -74,18 +70,13 @@ void freq_print(freq f) {
  * where A is a matrix in CSC/CSR format and x a dense vector
  */
 void spmv(csx A, size_t *x, size_t *y) {
-  int i, j, k;
-
   /* initialize result vector */
-  for (i = 0; i < A->v; i++) {
-    y[i] = 0;
-  }
+  cilk_for(int i = 0; i < A->v; i++) { y[i] = 0; }
 
   /* perform matrix-vector multiplication */
-  for (j = 0; j < A->v; j++) {
-    for (k = A->com[j]; k < A->com[j + 1]; k++) {
-      i = A->unc[k];
-      y[i] += x[j];
+  cilk_for(int j = 0; j < A->v; j++) {
+    for (int k = A->com[j]; k < A->com[j + 1]; k++) {
+      y[A->unc[k]] += x[j];
     }
   }
 }
@@ -97,8 +88,8 @@ void spmv(csx A, size_t *x, size_t *y) {
  * 1
  */
 void c3(csx A, size_t *c3) {
-  int i, j, k, l, lb, up, clb, cup, llb;
-  for (i = 0; i < A->v; i++) {
+  int j, k, l, lb, up, clb, cup, llb;
+  cilk_for(int i = 0; i < A->v; i++) {
     lb = A->com[i];
     up = A->com[i + 1];
     for (j = lb; j < up; j++) {

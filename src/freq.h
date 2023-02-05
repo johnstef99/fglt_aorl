@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <cilk/cilk.h>
 
 #include "csx.h"
 
