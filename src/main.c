@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  printf("CILK workes: %d\n", __cilkrts_get_nworkers());
+  printf("CILK_NWORKERS: %d\n\n", __cilkrts_get_nworkers());
 
   struct timespec start, end;
 
