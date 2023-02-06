@@ -24,23 +24,29 @@ int main(int argc, char *argv[]) {
 
   /* Read mtx file */
   printf("Reading mtx file.. ");
+  fflush(stdout);
   clock_gettime(CLOCK_MONOTONIC, &start);
   csx csc = csc_from_file(argv[1]);
   clock_gettime(CLOCK_MONOTONIC, &end);
   printf("%fms\n", get_elapsed_ms(start, end));
-  #ifdef DEBUG
+#ifdef DEBUG
   csx_print(csc);
-  #endif /* ifdef DEBUG */
+#endif /* ifdef DEBUG */
+  printf("Vertices: %zu\n"
+         "Edges:    %zu\n"
+         "\n",
+         csc->v, csc->e);
 
   printf("Calculating σ0-4.. ");
+  fflush(stdout);
   clock_gettime(CLOCK_MONOTONIC, &start);
   freq f = freq_calc(csc);
   clock_gettime(CLOCK_MONOTONIC, &end);
   printf("%fms\n", get_elapsed_ms(start, end));
 
-  #ifdef DEBUG
+#ifdef DEBUG
   freq_print(f);
-  #endif /* ifdef DEBUG */
+#endif /* ifdef DEBUG */
 
   freq_free(f);
   csx_free(csc);
