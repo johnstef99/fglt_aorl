@@ -28,25 +28,52 @@ void freq_free(freq f) {
 freq freq_calc(csx A) {
   freq f = freq_new(A->v);
 
+  struct timespec start, end;
+
   // calculate σ0
+  clock_gettime(CLOCK_MONOTONIC, &start);
+
   cilk_for(size_t i = 0; i < A->v; i++) { f->s0[i] = 1; }
 
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  f->s0_ms = get_elapsed_ms(start, end);
+
   // calculate σ1
+  clock_gettime(CLOCK_MONOTONIC, &start);
+
   cilk_for(size_t i = 0; i < A->v; i++) {
     f->s1[i] = A->com[i + 1] - A->com[i];
   }
+  
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  f->s1_ms = get_elapsed_ms(start, end);
 
   // calculate σ2
+  clock_gettime(CLOCK_MONOTONIC, &start);
+
   spmv(A, f->s1, f->s2);
   cilk_for(size_t i = 0; i < A->v; i++) { f->s2[i] -= f->s1[i]; }
 
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  f->s2_ms = get_elapsed_ms(start, end);
+
   // calculate σ3
+  clock_gettime(CLOCK_MONOTONIC, &start);
+
   cilk_for(size_t i = 0; i < A->v; i++) {
     f->s3[i] = (f->s1[i] * (f->s1[i] - 1)) / 2;
   }
 
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  f->s3_ms = get_elapsed_ms(start, end);
+
   // calculate σ4
+  clock_gettime(CLOCK_MONOTONIC, &start);
+
   c3(A, f->s4);
+
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  f->s4_ms = get_elapsed_ms(start, end);
 
   cilk_for(size_t i = 0; i < A->v; i++) {
     f->s2[i] -= 2 * f->s4[i];

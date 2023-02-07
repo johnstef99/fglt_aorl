@@ -6,6 +6,7 @@
 #include <cilk/cilk.h>
 
 #include "csx.h"
+#include "common.h"
 
 struct FREQ {
   /* num of vertices */
@@ -16,6 +17,12 @@ struct FREQ {
   size_t *s2;
   size_t *s3;
   size_t *s4;
+
+  double s0_ms;
+  double s1_ms;
+  double s2_ms;
+  double s3_ms;
+  double s4_ms;
 };
 
 typedef struct FREQ *freq;
