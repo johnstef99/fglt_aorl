@@ -4,21 +4,14 @@ LIB_DIR  = ./libs
 BIN_DIR  = ./bin
 
 CFILES   = $(wildcard $(SRC_DIR)/*.c)
+CUFILES   = $(wildcard $(SRC_DIR)/*.cu)
 LIBFILES = $(wildcard $(LIB_DIR)/*.c)
-OBJFILES = $(CFILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(LIBFILES:$(LIB_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJFILES = $(CFILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) $(LIBFILES:$(LIB_DIR)/%.c=$(OBJ_DIR)/%.o) $(CUFILES:$(SRC_DIR)/%.cu=$(OBJ_DIR)/%.o)
 OUT      = $(BIN_DIR)/fglt_aorl
 
-CC      = clang
+CC      = nvcc -ccbin /opt/opencilk/bin/clang -forward-unknown-to-host-compiler
 CFLAGS  = -Wall -fopencilk
 LDFLAGS = -fopencilk
-
-ifeq ($(shell uname),Darwin)
-	# config compile on macos
-	CC  = xcrun /opt/opencilk/bin/clang
-else
-	# config compile on HPC AUTH
-	CC  = $(OPENCILK)/build/bin/clang
-endif
 
 all: CFLAGS += -O3
 all: $(OUT)
@@ -34,6 +27,9 @@ $(OUT): $(OBJFILES)
 	$(CC) $(LDFLAGS) -o $@ $^ 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cu
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJ_DIR)/%.o: $(LIB_DIR)/%.c

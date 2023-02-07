@@ -1,18 +1,19 @@
 #include "freq.h"
+#include "freq_cuda.h"
 
 void spmv(csx A, size_t *x, size_t *y);
 void c3(csx A, size_t *c3);
 
 freq freq_new(size_t number_of_vertices) {
-  freq f = malloc(sizeof(struct FREQ));
+  freq f = (freq)malloc(sizeof(struct FREQ));
 
   f->v = number_of_vertices;
 
-  f->s0 = calloc(f->v, sizeof(size_t));
-  f->s1 = calloc(f->v, sizeof(size_t));
-  f->s2 = calloc(f->v, sizeof(size_t));
-  f->s3 = calloc(f->v, sizeof(size_t));
-  f->s4 = calloc(f->v, sizeof(size_t));
+  f->s0 = (size_t *)calloc(f->v, sizeof(size_t));
+  f->s1 = (size_t *)calloc(f->v, sizeof(size_t));
+  f->s2 = (size_t *)calloc(f->v, sizeof(size_t));
+  f->s3 = (size_t *)calloc(f->v, sizeof(size_t));
+  f->s4 = (size_t *)calloc(f->v, sizeof(size_t));
 
   return f;
 }
@@ -44,7 +45,7 @@ freq freq_calc(csx A) {
   cilk_for(size_t i = 0; i < A->v; i++) {
     f->s1[i] = A->com[i + 1] - A->com[i];
   }
-  
+
   clock_gettime(CLOCK_MONOTONIC, &end);
   f->s1_ms = get_elapsed_ms(start, end);
 
@@ -68,12 +69,7 @@ freq freq_calc(csx A) {
   f->s3_ms = get_elapsed_ms(start, end);
 
   // calculate σ4
-  clock_gettime(CLOCK_MONOTONIC, &start);
-
-  c3(A, f->s4);
-
-  clock_gettime(CLOCK_MONOTONIC, &end);
-  f->s4_ms = get_elapsed_ms(start, end);
+  cuda_c3(A, f);
 
   cilk_for(size_t i = 0; i < A->v; i++) {
     f->s2[i] -= 2 * f->s4[i];

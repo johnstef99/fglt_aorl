@@ -1,6 +1,6 @@
 # vim: set filetype=yaml :
 CompileFlags:
-  Compiler: "xcrun /opt/opencilk/bin/clang"
+  Compiler: "nvcc -ccbin /opt/opencilk/bin/clang++ -forward-unknown-to-host-compiler"
   Add:
     - "-I/opt/opencilk/lib/clang/14.0.6/myinclude"
     - "-Dcilk_for=for"
