@@ -44,7 +44,7 @@ freq freq_calc(csx A) {
   cilk_for(size_t i = 0; i < A->v; i++) {
     f->s1[i] = A->com[i + 1] - A->com[i];
   }
-  
+
   clock_gettime(CLOCK_MONOTONIC, &end);
   f->s1_ms = get_elapsed_ms(start, end);
 
@@ -115,29 +115,36 @@ void spmv(csx A, size_t *x, size_t *y) {
  * 1
  */
 void c3(csx A, size_t *c3) {
-  int j, k, l, lb, up, clb, cup, llb;
+  int j, k, l, lb, up, clb, cup;
   cilk_for(int i = 0; i < A->v; i++) {
     lb = A->com[i];
     up = A->com[i + 1];
     for (j = lb; j < up; j++) {
+
+      if (i <= A->unc[j])
+        break;
+
       clb = A->com[A->unc[j]];
       cup = A->com[A->unc[j] + 1];
-      llb = lb;
-      for (k = clb; k < cup; k++) {
-        for (l = llb; l < up; l++) {
-          if (A->unc[k] == A->unc[l]) {
-            c3[i]++;
-            llb = l + 1;
-            break;
-          } else if (A->unc[k] < A->unc[l]) {
-            llb = l;
-            break;
-          } else {
-            llb = l + 1;
-          }
+
+      k = clb;
+      l = lb;
+
+      while (k < cup && l < up) {
+        if (A->unc[l] > i || A->unc[k] > A->unc[j]) {
+          break;
+        } else if (A->unc[l] == A->unc[k]) {
+          c3[i]++;
+          c3[A->unc[j]]++;
+          c3[A->unc[l]]++;
+          k++;
+          l++;
+        } else if (A->unc[l] < A->unc[k]) {
+          l++;
+        } else {
+          k++;
         }
       }
     }
-    c3[i] /= 2;
   }
 }
