@@ -8,8 +8,8 @@
 
 int main(int argc, char *argv[]) {
 
-  if (argc < 2) {
-    fprintf(stderr, "Usage: %s [martix-market-filename]\n", argv[0]);
+  if (argc < 3) {
+    fprintf(stderr, "Usage: %s [martix-filename] [results-file]\n", argv[0]);
     exit(1);
   }
 
@@ -41,9 +41,9 @@ int main(int argc, char *argv[]) {
   printf("σ3: %fms\n", f->s3_ms);
   printf("σ4: %fms\n", f->s4_ms);
 
-#ifdef DEBUG
-  freq_print(f);
-#endif /* ifdef DEBUG */
+  FILE *results = fopen(argv[2], "w");
+  freq_print(f, results);
+  fclose(results);
 
   freq_free(f);
   csx_free(csc);

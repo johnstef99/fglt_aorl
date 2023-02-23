@@ -83,13 +83,13 @@ freq freq_calc(csx A) {
   return f;
 }
 
-void freq_print(freq f) {
-  printf("  v   σ0  σ1  σ2  σ3  σ4\n");
+void freq_print(freq f, FILE *file) {
+  fprintf(file, "  v   σ0  σ1  σ2  σ3  σ4\n");
   for (size_t v = 0; v < f->v; v++) {
-    printf("%3zu: %3zu %3zu %3zu %3zu %3zu\n", v, f->s0[v], f->s1[v], f->s2[v],
-           f->s3[v], f->s4[v]);
+    fprintf(file, "%3zu: %3zu %3zu %3zu %3zu %3zu\n", v, f->s0[v], f->s1[v],
+            f->s2[v], f->s3[v], f->s4[v]);
   }
-};
+}
 
 /**
  * Caclucaltes y = Ax

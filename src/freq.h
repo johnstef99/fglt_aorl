@@ -33,6 +33,6 @@ void freq_free(freq f);
 
 freq freq_calc(csx A);
 
-void freq_print(freq f);
+void freq_print(freq f, FILE* file);
 
 #endif // !FREQ_H
