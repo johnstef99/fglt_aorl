@@ -35,11 +35,13 @@ int main(int argc, char *argv[]) {
   printf("Calculating s0-4..\n");
   freq f = freq_calc(csc);
 
-  printf("s0: %fms\n", f->s0_ms);
-  printf("s1: %fms\n", f->s1_ms);
-  printf("s2: %fms\n", f->s2_ms);
-  printf("s3: %fms\n", f->s3_ms);
-  printf("s4: %fms\n", f->s4_ms);
+  printf("s0:    %f ms\n", f->s0_ms);
+  printf("s1:    %f ms\n", f->s1_ms);
+  printf("s2:    %f ms\n", f->s2_ms);
+  printf("s3:    %f ms\n", f->s3_ms);
+  printf("s4:    %f ms\n", f->s4_ms);
+  printf("TOTAL: %f ms\n",
+         f->s0_ms + f->s1_ms + f->s2_ms + f->s3_ms + f->s4_ms);
 
   FILE *results = fopen(argv[2], "w");
   freq_print(f, results);
