@@ -30,7 +30,7 @@ freq freq_calc(csx A) {
 
   struct timespec start, end;
 
-  // calculate σ0
+  // calculate s0
   clock_gettime(CLOCK_MONOTONIC, &start);
 
   cilk_for(size_t i = 0; i < A->v; i++) { f->s0[i] = 1; }
@@ -38,7 +38,7 @@ freq freq_calc(csx A) {
   clock_gettime(CLOCK_MONOTONIC, &end);
   f->s0_ms = get_elapsed_ms(start, end);
 
-  // calculate σ1
+  // calculate s1
   clock_gettime(CLOCK_MONOTONIC, &start);
 
   cilk_for(size_t i = 0; i < A->v; i++) {
@@ -48,7 +48,7 @@ freq freq_calc(csx A) {
   clock_gettime(CLOCK_MONOTONIC, &end);
   f->s1_ms = get_elapsed_ms(start, end);
 
-  // calculate σ2
+  // calculate s2
   clock_gettime(CLOCK_MONOTONIC, &start);
 
   spmv(A, f->s1, f->s2);
@@ -57,7 +57,7 @@ freq freq_calc(csx A) {
   clock_gettime(CLOCK_MONOTONIC, &end);
   f->s2_ms = get_elapsed_ms(start, end);
 
-  // calculate σ3
+  // calculate s3
   clock_gettime(CLOCK_MONOTONIC, &start);
 
   cilk_for(size_t i = 0; i < A->v; i++) {
@@ -67,7 +67,7 @@ freq freq_calc(csx A) {
   clock_gettime(CLOCK_MONOTONIC, &end);
   f->s3_ms = get_elapsed_ms(start, end);
 
-  // calculate σ4
+  // calculate s4
   clock_gettime(CLOCK_MONOTONIC, &start);
 
   c3(A, f->s4);
@@ -84,7 +84,7 @@ freq freq_calc(csx A) {
 }
 
 void freq_print(freq f, FILE *file) {
-  fprintf(file, "  v   σ0  σ1  σ2  σ3  σ4\n");
+  fprintf(file, "  v   s0  s1  s2  s3  s4\n");
   for (size_t v = 0; v < f->v; v++) {
     fprintf(file, "%3zu: %3zu %3zu %3zu %3zu %3zu\n", v, f->s0[v], f->s1[v],
             f->s2[v], f->s3[v], f->s4[v]);
