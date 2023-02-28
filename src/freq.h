@@ -16,7 +16,7 @@ struct FREQ {
   size_t *s1;
   size_t *s2;
   size_t *s3;
-  size_t *s4;
+  _Atomic size_t *s4;
 
   double s0_ms;
   double s1_ms;

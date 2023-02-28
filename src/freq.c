@@ -1,7 +1,7 @@
 #include "freq.h"
 
 void spmv(csx A, size_t *x, size_t *y);
-void c3(csx A, size_t *c3);
+void c3(csx A, _Atomic size_t *c3);
 
 freq freq_new(size_t number_of_vertices) {
   freq f = malloc(sizeof(struct FREQ));
@@ -103,7 +103,7 @@ void spmv(csx A, size_t *x, size_t *y) {
   /* perform matrix-vector multiplication */
   cilk_for(int j = 0; j < A->v; j++) {
     for (int k = A->com[j]; k < A->com[j + 1]; k++) {
-      y[A->unc[k]] += x[j];
+      y[j] += x[A->unc[k]];
     }
   }
 }
@@ -114,7 +114,7 @@ void spmv(csx A, size_t *x, size_t *y) {
  * where A is a matrix in CSC/CSR format and e a vector with all elements equal
  * 1
  */
-void c3(csx A, size_t *c3) {
+void c3(csx A, _Atomic size_t *c3) {
   int j, k, l, lb, up, clb, cup;
   cilk_for(int i = 0; i < A->v; i++) {
     lb = A->com[i];
