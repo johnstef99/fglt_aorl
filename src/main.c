@@ -32,14 +32,14 @@ int main(int argc, char *argv[]) {
          "\n",
          csc->v, csc->e);
 
-  printf("Calculating σ0-4..\n");
+  printf("Calculating s0-4..\n");
   freq f = freq_calc(csc);
 
-  printf("σ0: %fms\n", f->s0_ms);
-  printf("σ1: %fms\n", f->s1_ms);
-  printf("σ2: %fms\n", f->s2_ms);
-  printf("σ3: %fms\n", f->s3_ms);
-  printf("σ4: %fms\n", f->s4_ms);
+  printf("s0: %fms\n", f->s0_ms);
+  printf("s1: %fms\n", f->s1_ms);
+  printf("s2: %fms\n", f->s2_ms);
+  printf("s3: %fms\n", f->s3_ms);
+  printf("s4: %fms\n", f->s4_ms);
 
   FILE *results = fopen(argv[2], "w");
   freq_print(f, results);
