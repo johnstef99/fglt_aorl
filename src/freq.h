@@ -1,12 +1,12 @@
 #ifndef FREQ_H
 #define FREQ_H
 
+#include <cilk/cilk.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <cilk/cilk.h>
 
-#include "csx.h"
 #include "common.h"
+#include "csx.h"
 
 struct FREQ {
   /* num of vertices */
@@ -33,6 +33,6 @@ void freq_free(freq f);
 
 freq freq_calc(csx A);
 
-void freq_print(freq f, FILE* file);
+void freq_print(freq f, FILE *file);
 
 #endif // !FREQ_H
