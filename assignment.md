@@ -15,11 +15,11 @@ More details in [the paper](https://arxiv.org/abs/2007.11111).
   year = {2020},
 }
 ```
-For this assignment, you will only implement the calculations of $$σ_1$$, $$σ_2$$, $$σ_3$$ and $$σ_4$$ from this table:
+For this assignment, you will only implement the calculations of $σ_1$, $σ_2$, $σ_3$ and $σ_4$ from this table:
 
 ![](https://raw.githubusercontent.com/fcdimitr/fglt/master/figs/table-overview.png)
 
-Input is a sparse matrix $$A$$.  
+Input is a sparse matrix $A$.  
 
 Use graphs from SuiteSparse Matrix Collection: i) `auto`, ii) `great-britain_osm` and iii) `delaunay_n22` for your experiments.
 
@@ -27,6 +27,6 @@ Use graphs from SuiteSparse Matrix Collection: i) `auto`, ii) `great-britain_osm
 
 - A 4-page report in PDF format 
 - Describe the choices you've made for parallelization and streaming
-- Compare the CUDA execution times with the times from our multicore parallel code (restrict the computations to only $$σ_1$$, $$σ_2$$, $$σ_3$$ and $$σ_4$$ by erasing all unrelated codes). 
+- Compare the CUDA execution times with the times from our multicore parallel code (restrict the computations to only $σ_1$, $σ_2$, $σ_3$ and $σ_4$ by erasing all unrelated codes). 
 - Upload the source code on GitHub, BitBucket, Dropbox, Google Drive,
   etc. and add a link to your report.
