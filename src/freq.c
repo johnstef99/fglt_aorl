@@ -84,9 +84,9 @@ freq freq_calc(csx A) {
 }
 
 void freq_print(freq f, FILE *file) {
-  fprintf(file, "  v   s0  s1  s2  s3  s4\n");
+  fprintf(file, "v,s0,s1,s2,s3,s4\n");
   for (size_t v = 0; v < f->v; v++) {
-    fprintf(file, "%3zu: %3zu %3zu %3zu %3zu %3zu\n", v, f->s0[v], f->s1[v],
+    fprintf(file, "%zu,%zu,%zu,%zu,%zu,%zu\n", v, f->s0[v], f->s1[v],
             f->s2[v], f->s3[v], f->s4[v]);
   }
 }
