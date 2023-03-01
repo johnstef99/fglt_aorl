@@ -12,4 +12,5 @@ $d\_4 = c_3 = C_3 e /2$ where $C_3 = A \odot A^2$.
 
 ---
 Assignment can be found [here](./assignment.md).
+
 [Report from our team](./report.pdf).
